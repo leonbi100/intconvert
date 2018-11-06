@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Integer Converter</title>
+
+<script type="application/javascript">
+var message = "";
+ function convertInteger() {
+	 var inputString = document.getElementById("input").value;
+	 
+	//Remove format and empty string if any
+	inputString = inputString.replace(/,/g, "").trim();
+	if (isInteger(inputString) && inputString.charAt(0) != "-") {
+		//Remove leading 0s
+		var cleanedInteger = parseInt(inputString);
+		inputString =  cleanedInteger.toString();
+		message += "Your input integer: " + cleanedInteger + "\n\r";
+		
+		var convertedInteger = convertIntegerToWords(inputString).trim();
+		
+		message += "The english words representation of the number: " + "\n" + convertedInteger + "\n\r";
+		writeMessage(message);
+	}
+	else {
+		message = "Invalid input integer.";
+		writeMessage(message);
+	}
+	
+ }
+ 
+ function convertIntegerToWords(inputString) {
+	 var convertedIntegerWords = "";
+	 
+	 //For Zero
+	 if (inputString == "0") {
+		return "Zero";
+	 }
+	
+	//Check the integer position to convert the integer to English word
+	while (inputString.length > 0) {
+		var length = inputString.length;
+		var position = Math.floor(length / 3);
+		var digits = length % 3;
+		
+		if (digits == 0) {
+			position--;
+			digits = 3;
+		}
+		
+		var positionWord = getPositionWord(position);
+		var positionInteger = inputString.substring(0, digits);
+		var digitsWord = getDigitsWord(positionInteger);
+		
+		if (digitsWord.trim().length > 0) {
+			convertedIntegerWords += digitsWord;
+			convertedIntegerWords += " ";
+			convertedIntegerWords += positionWord;
+			convertedIntegerWords += " ";
+		}
+		
+		inputString = inputString.substring(digits);
+		
+	}
+		
+	 return convertedIntegerWords;
+	 
+ }
+ 
+    //Convert 3 digits integer in position to English word
+	function getDigitsWord(positionInteger) {
+		var wordHundred = "";
+		var wordTen = "";
+		var wordOne = "";
+		
+		var length = positionInteger.length;
+		
+		if (length == 3) {
+			wordHundred = getHundredWord(positionInteger.substring(0, 1));
+			if (positionInteger.substring(1, 2) == "1") {
+				wordTen = getTeenWord(positionInteger.substring(1, 3));
+			}
+			else {
+				wordTen = getTenWord(positionInteger.substring(1, 2));
+				wordOne = getOneWord(positionInteger.substring(2, 3));
+			}
+		}
+		else if (length == 2) {
+			if (positionInteger.substring(0, 1) == "1") {
+				wordTen = getTeenWord(positionInteger.substring(0, 2));
+			}
+			else {
+				wordTen = getTenWord(positionInteger.substring(0, 1));
+				wordOne = getOneWord(positionInteger.substring(1, 2));
+			}
+		}
+		else if (length == 1) {
+			wordOne = getOneWord(positionInteger.substring(0, 1));
+		}
+		else {
+			
+		}
+		
+		var digitsWord = wordHundred + " " + wordTen + " " + wordOne;
+		
+		return digitsWord;
+	}
+    
+	//Convert hundred digit to English word. If no, return empty string
+	function getHundredWord(hundredInteger) {
+		var hundredWord = "";
+		
+		if (hundredInteger != "0") {
+			hundredWord = getOneWord(hundredInteger) + " Hundred";
+		}
+		
+		return hundredWord;
+	}
+	
+	//Convert teens 2 digits to English word. If no, return empty string.
+	function getTeenWord(teenInteger) {
+		var teenWord = "";
+		
+		switch (teenInteger) {
+			case "10": {
+				teenWord = "Ten";
+				break;
+			}
+			case "11": {
+				teenWord = "Eleven";
+				break;
+			}
+			case "12": {
+				teenWord = "Twelve";
+				break;
+			}
+			case "13": {
+				teenWord = "Thirteen";
+				break;
+			}
+			case "14": {
+				teenWord = "Fourteen";
+				break;
+			}
+			case "15": {
+				teenWord = "Fifteen";
+				break;
+			}
+			case "16": {
+				teenWord = "Sixteen";
+				break;
+			}
+			case "17": {
+				teenWord = "Seventeen";
+				break;
+			}
+			case "18": {
+				teenWord = "Eighteen";
+				break;
+			}
+			case "19": {
+				teenWord = "Nineteen";
+				break;
+			}
+			default: {
+				teenWord = "";
+				break;
+			}
+		}
+			
+		return teenWord;
+	}
+	
+	//Convert ten digit to English word. If no, return empty string.
+	function getTenWord(tenInteger) {
+		var tenWord = "";
+		
+		switch (tenInteger) {
+			case "2": {
+				tenWord = "Twenty";
+				break;
+			}
+			case "3": {
+				tenWord = "Thirty";
+				break;
+			}
+			case "4": {
+				tenWord = "Fourty";
+				break;
+			}
+			case "5": {
+				tenWord = "Fifty";
+				break;
+			}
+			case "6": {
+				tenWord = "Sixty";
+				break;
+			}
+			case "7": {
+				tenWord = "Seventy";
+				break;
+			}
+			case "8": {
+				tenWord = "Eighty";
+				break;
+			}
+			case "9": {
+				tenWord = "Ninety";
+				break;
+			}
+			default: {
+				tenWord = "";
+				break;
+			}
+		}
+		
+		return tenWord;
+	}
+	
+	//Convert individual digit to English word. If no, return empty string.
+	function getOneWord(oneInteger) {
+		var oneWord = "";
+		
+		switch (oneInteger) {
+			case "1": {
+				oneWord = "One";
+				break;
+			}
+			case "2": {
+				oneWord = "Two";
+				break;
+			}
+			case "3": {
+				oneWord = "Three";
+				break;
+			}
+			case "4": {
+				oneWord = "Four";
+				break;
+			}
+			case "5": {
+				oneWord = "Five";
+				break;
+			}
+			case "6": {
+				oneWord = "Six";
+				break;
+			}
+			case "7": {
+				oneWord = "Seven";
+				break;
+			}
+			case "8": {
+				oneWord = "Eight";
+				break;
+			}
+			case "9": {
+				oneWord = "Nine";
+				break;
+			}
+			default: {
+				oneWord = "";
+				break;
+			}
+		}
+		
+		return oneWord;
+	}
+	
+	//Return 3 digit position name. 
+	function getPositionWord(position) {
+		var positionWord = "";
+		
+		switch (position) {
+			case 1: {
+				positionWord = "Thousand";
+				break;
+			}
+			case 2: {
+				positionWord = "Million";
+				break;
+			}
+			case 3: {
+				positionWord = "Billion";
+				break;
+			}
+			case 4: {
+				positionWord = "Trillion";
+				break;
+			}
+			default: {
+				positionWord = "";
+				break;
+			}
+		}
+		
+		return positionWord;
+	}
+
+ function isInteger(inputString) {
+	 if (+inputString===parseInt(inputString)) {
+		 return true
+	 } 
+	 else {
+		 return false
+	 }
+ }
+ 
+ function writeMessage(message) {
+	 document.getElementById("message").value = message;	
+ }
+ 
+</script>
+
+</head>
+
+<body>
+<h2>Convert a non-negative integer to its English words representation</h2>
+
+<p>
+Test Cases:
+<br/>
+0000
+<br/>
+0001234
+<br/>
+0A001234
+<br/>
+42342.87
+<br/>
+123
+<br/>
+12345
+<br/>
+1234567
+<br/>
+0
+<br/>
+1000010
+<br/>
+
+
+</p>
+<h5>Please enter an integer:</h5>
+<input type="text" name="input" id="input" value="">
+
+
+<input type="button" name="converter" value="Converter" onClick="convertInteger()">
+<br/>
+<br/>
+
+<textarea name="message" id="message" rows="10" cols="50">
+ 
+</textarea>
+
+</body>
+</html>
